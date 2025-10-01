@@ -40,16 +40,31 @@ namespace prg_v3_form3
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            // Elegir marca, modelo y color
-            if (cmbMarca.SelectedItem == null || cmbModelo.SelectedItem == null || cmbColor.SelectedItem == null)
+            bool repetir = true;
+
+            do
             {
-                MessageBox.Show("Debe seleccionar Marca, Modelo y Color");
-                return;
-            }
+                // Valida la seleccion de auto
+                if (cmbMarca.SelectedItem == null || cmbModelo.SelectedItem == null || cmbColor.SelectedItem == null)
+                {
+                    MessageBox.Show("Debe seleccionar Marca, Modelo y Color");
+                    repetir = false; 
+                }
+                else
+                {
+                    // Agregar auto a la lista
+                    dgvAutos.Rows.Add(cmbMarca.SelectedItem, cmbModelo.SelectedItem, cmbColor.SelectedItem);
+                    MessageBox.Show("Auto agregado correctamente");
 
-            // Lista de autos
-            dgvAutos.Rows.Add(cmbMarca.SelectedItem, cmbModelo.SelectedItem, cmbColor.SelectedItem);
+                    // vacia ComboBox para nuevo ingreso
+                    cmbMarca.SelectedIndex = -1;
+                    cmbModelo.Items.Clear();
+                    cmbColor.SelectedIndex = -1;
 
+                    repetir = false; 
+                }
+
+            } while (repetir);
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -69,6 +84,12 @@ namespace prg_v3_form3
         private void cmbMarca_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbModelo.Items.Clear(); // limpiar modelos anteriores
+
+            
+            if (cmbMarca.SelectedItem == null) 
+            { 
+                return;
+            }
 
 
             switch (cmbMarca.SelectedItem.ToString())
